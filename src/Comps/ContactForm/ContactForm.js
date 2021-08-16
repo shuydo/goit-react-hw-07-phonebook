@@ -1,29 +1,18 @@
-import { nanoid } from "nanoid";
 import { useState } from "react";
-
-// import PropTypes from "prop-types";
-import { /*connect ,*/ useDispatch } from "react-redux";
-// import contactsActions from "../../redux/contacts-actions";
-import { addItem } from "../../redux/slices/items";
+import { useCreateContactMutation } from "../../redux/slices/contacts";
 
 const initState = { name: "", number: "" };
 
 export default function ContactForm() {
-  // const [name, setName] = useState();
-  // const [number, setNumber] = useState();
-  const [form, setForm] = useState(initState); 
-  const dispatch=useDispatch()
-  // const handleChangeName = e => setName(e.target.value);
-  // const handleChangeNumber = e => setNumber(e.target.value);
+  const [form, setForm] = useState(initState);
+  const [createContact] = useCreateContactMutation();
   const inputHandler = e =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = e => {
     e.preventDefault();
-    form.id = nanoid(5); 
-    dispatch(addItem(form));
-    setForm(initState); 
-    // onSubmit({ name, number });    // setName("");    // setNumber("");
+    createContact(form);
+    setForm(initState);
   };
 
   return (
@@ -54,14 +43,3 @@ export default function ContactForm() {
     </form>
   );
 }
-
-// ContactForm.propTypes = {
-//   onSubmit: PropTypes.func.isRequired,
-// };
-
-// const mapsDispatchToProps = dispatch => ({
-//   onSubmit: ({ name, number }) =>
-//     dispatch(contactsActions.addContact(name, number)),
-// });
-
-// export default connect(null, mapsDispatchToProps)(ContactForm);
